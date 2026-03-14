@@ -1,0 +1,68 @@
+############################
+# Global
+############################
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+
+############################
+# Python / Backend
+############################
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ruff_cache/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment & config
+backend/.env
+backend/.env.*
+
+############################
+# Node / Frontend (Next.js)
+############################
+node_modules/
+frontend/node_modules/
+
+.next/
+next-env.d.ts
+.turbo/
+.vercel/
+
+# Build output
+frontend/.next/
+frontend/out/
+
+# Env files
+frontend/.env
+frontend/.env.*
+
+############################
+# IDE / Editor
+############################
+.vscode/
+.idea/
+*.iml
+
+############################
+# OS / Misc
+############################
+.cache/
+
+
