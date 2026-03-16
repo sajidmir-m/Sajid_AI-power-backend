@@ -1,10 +1,22 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
 from logging.config import fileConfig
 from os import getenv
 
+from dotenv import load_dotenv
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+
+# Ensure repo root is on sys.path so `import backend.*` works
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+# Load env vars for Alembic (prefer backend/.env, fallback to repo root .env)
+load_dotenv(REPO_ROOT / "backend" / ".env", override=False)
+load_dotenv(REPO_ROOT / ".env", override=False)
 
 from backend.app.database import Base
 from backend.app import models  # noqa: F401 - ensure models are imported for autogenerate

@@ -21,7 +21,7 @@ Full-stack prototype that ingests educational PDFs, chunks extracted text, gener
 2. **Ingestion**: FastAPI → PyMuPDF → Chunker → Supabase Postgres
 3. **Quiz generation**: FastAPI → LLM provider (`GeminiQuizProvider`) → validate JSON → store questions
 4. **Quiz delivery**: Next.js → `GET /quiz?topic=...&difficulty=...`
-5. **Answering**: Next.js → `POST /submit-answer` → SQLite → adaptive difficulty recommendation
+5. **Answering**: Next.js → `POST /submit-answer` → Supabase Postgres → adaptive difficulty recommendation
 
 ### Backend setup
 

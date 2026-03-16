@@ -25,13 +25,17 @@ class SourceDocument(Base):
 
 class ContentChunk(Base):
     __tablename__ = "content_chunks"
-    __table_args__ = (UniqueConstraint("chunk_id", name="uq_content_chunks_chunk_id"),)
+    __table_args__ = (
+        UniqueConstraint("chunk_id", name="uq_content_chunks_chunk_id"),
+        UniqueConstraint("source_id", "chunk_index", name="uq_content_chunks_source_chunk_index"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     chunk_id: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     source_id: Mapped[int] = mapped_column(ForeignKey("source_documents.id"), nullable=False, index=True)
     topic: Mapped[str] = mapped_column(String(200), nullable=False, index=True)
     text: Mapped[str] = mapped_column(Text, nullable=False)
+    chunk_index: Mapped[int] = mapped_column(Integer, nullable=False, index=True)
 
     source_document: Mapped[SourceDocument] = relationship(back_populates="chunks")
 

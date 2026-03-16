@@ -8,6 +8,7 @@ from ..database import get_db
 from ..models import ContentChunk, SourceDocument
 from ..pdf_ingest import clean_text, extract_text_from_pdf
 from ..schemas import IngestResponse
+from ..services.chunk_service import _save_chunks_to_db
 from ..services.quiz_service import generate_questions_for_chunks
 
 
@@ -46,18 +47,14 @@ async def ingest_pdf(
     db.flush()  # assigns src.id
 
     source_id = f"SRC_{src.id:03d}"
-    for idx, ch_text in enumerate(chunks, start=1):
-        chunk_id = f"{source_id}_CH_{idx:02d}"
-        db.add(
-            ContentChunk(
-                chunk_id=chunk_id,
-                source_id=src.id,
-                topic=topic,
-                text=ch_text,
-            )
-        )
-
-    db.commit()
+    inserted = _save_chunks_to_db(
+        db,
+        source_id=src.id,
+        chunks=[
+            {"topic": topic, "text": ch_text, "chunk_index": idx}
+            for idx, ch_text in enumerate(chunks)
+        ],
+    )
     db.refresh(src)
 
     if generate_quiz:
@@ -72,5 +69,5 @@ async def ingest_pdf(
             # so the client still receives a successful ingest response.
             pass
 
-    return IngestResponse(source_document=src, source_id=source_id, chunks_stored=len(chunks))
+    return IngestResponse(source_document=src, source_id=source_id, chunks_stored=inserted)
 
